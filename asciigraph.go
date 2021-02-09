@@ -7,6 +7,33 @@ import (
 	"strings"
 )
 
+var black = "\x1b[30m"
+var red = "\x1b[31m"
+var green = "\x1b[32m"
+var yellow = "\x1b[33m"
+var blue = "\x1b[34m"
+var magenta = "\x1b[35m"
+var cyan = "\x1b[36m"
+var lightgray = "\x1b[37m"
+var defaultColor = "\x1b[39m"
+var darkgray = "\x1b[90m"
+var lightred = "\x1b[91m"
+var lightgreen = "\x1b[92m"
+var lightyellow = "\x1b[93m"
+var lightblue = "\x1b[94m"
+var lightmagenta = "\x1b[95m"
+var lightcyan = "\x1b[96m"
+var white = "\x1b[97m"
+var reset = "\x1b[0m"
+
+// colorChar
+func colorChar(character string, color string) string {
+  if color != "" {
+    return color + character + reset
+  }
+  return character
+}
+
 // Plot returns ascii graph for a series.
 func Plot(series []float64, options ...Option) string {
 	var logMaximum float64
@@ -107,6 +134,7 @@ func Plot(series []float64, options ...Option) string {
 
 	plot[rows-y0][config.Offset-1] = "┼" // first value
 
+  var color = blue
 	for x := 0; x < len(series)-1; x++ { // plot the line
 
 		d0 := series[x]
@@ -132,20 +160,20 @@ func Plot(series []float64, options ...Option) string {
 		y1 = int(round(d1*ratio) - float64(intmin2))
 
 		if y0 == y1 {
-			plot[rows-y0][x+config.Offset] = "─"
+			plot[rows-y0][x+config.Offset] = colorChar("─", color)
 		} else {
 			if y0 > y1 {
-				plot[rows-y1][x+config.Offset] = "╰"
-				plot[rows-y0][x+config.Offset] = "╮"
+				plot[rows-y1][x+config.Offset] = colorChar("╰", color)
+				plot[rows-y0][x+config.Offset] = colorChar("╮", color)
 			} else {
-				plot[rows-y1][x+config.Offset] = "╭"
-				plot[rows-y0][x+config.Offset] = "╯"
+				plot[rows-y1][x+config.Offset] = colorChar("╭", color)
+				plot[rows-y0][x+config.Offset] = colorChar("╯", color)
 			}
 
 			start := int(math.Min(float64(y0), float64(y1))) + 1
 			end := int(math.Max(float64(y0), float64(y1)))
 			for y := start; y < end; y++ {
-				plot[rows-y][x+config.Offset] = "│"
+				plot[rows-y][x+config.Offset] = colorChar("│", color)
 			}
 		}
 	}
