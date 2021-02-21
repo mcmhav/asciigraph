@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/guptarohit/asciigraph"
+	"github.com/mcmhav/asciigraph"
 )
 
 var (
